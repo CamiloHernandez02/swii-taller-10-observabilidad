@@ -1,13 +1,26 @@
-# Taller Lección 6: comunicación real entre microservicios
+# Taller 10: Observabilidad + Saga Pattern
 
-Ingeniería de Software II (UPTC). Parte del estado del Taller de la Lección 5 (Java 25, Spring Boot 4.1.1, Spring Cloud 2025.1.3).
+Ingeniería de Software II (UPTC). Implementación de observabilidad distribuida con X-Correlation-ID y Saga Pattern para transacciones distribuidas.
 
-| Pieza | Proyecto | Puerto |
-| :--- | :--- | :--- |
-| Registro de servicios (Eureka) | `eureka-server` | 8761 |
-| API Gateway (Spring Cloud Gateway) | `gateway` | 8000 |
-| Investigadores (REST, gRPC servidor, Outbox, Saga) | `investigadores-service` | 8080 / gRPC 9090 |
-| Publicaciones (gRPC cliente, Circuit Breaker, consumidores Kafka) | `publicaciones-service` | 8081 |
+**Base**: Taller 9 (EDA)
+**Nuevo**: Taller 10 agrega observabilidad (Micrometer, Prometheus) y Saga Orquestado
+
+| Pieza | Proyecto | Puerto | Descripción |
+| :--- | :--- | :--- | :--- |
+| Registro de servicios (Eureka) | `eureka-server` | 8761 | Service Discovery |
+| API Gateway | `gateway` | 8000 | Enrutamiento centralizado |
+| Investigadores (Observabilidad) | `investigadores-service` | 8081 | X-Correlation-ID, métricas, Saga |
+| Publicaciones (Observabilidad) | `publicaciones-service` | 8082 | X-Correlation-ID, métricas, Saga |
+| Consultas (Observabilidad) | `consultas-service` | 8084 | X-Correlation-ID, métricas |
+| Prometheus | (interno) | 9090 | Recolección de métricas |
+
+## Características T10: Observabilidad + Saga
+- ✅ CorrelacionIdInterceptor (propaga X-Correlation-ID)
+- ✅ MetricasService (counters, timers con percentiles)
+- ✅ Prometheus /actuator/prometheus
+- ✅ SagaOrquestador (ejecución secuencial, compensaciones LIFO)
+- ✅ Rollback automático en caso de error
+- ✅ Tests: 6 (2 Saga + 4 Métricas)
 
 Patrones: gRPC (`VerificadorInvestigadorGrpc`), Circuit Breaker (Resilience4j), Service Registry (Eureka), API Gateway, Domain Event + Transactional Outbox (Kafka), Saga por coreografía (eliminar investigador).
 
